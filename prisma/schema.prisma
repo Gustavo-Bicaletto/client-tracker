@@ -26,6 +26,65 @@ model Post {
     @@index([name])
 }
 
+model Client {
+    id        Int      @id @default(autoincrement())
+    name      String
+    email     String?
+    phone     String?
+    urgency   Urgency  @default(NORMAL)
+    opportunities Opportunity[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    createdBy   User   @relation(fields: [createdById], references: [id])
+    createdById String
+
+    @@index([name])
+}
+
+enum Urgency {
+    LOW
+    NORMAL
+    HIGH
+}
+
+model Car {
+    id        Int      @id @default(autoincrement())
+    brand    String
+    model    String
+    version  String?
+    year     Int?
+}
+
+model Opportunity {
+    id        Int      @id @default(autoincrement())
+    clientId  Int
+    carLabel  String
+    client    Client  @relation(fields: [clientId], references: [id])
+    carModel  Car?    @relation(fields: [carModelId], references: [id])
+    stage    Stage   @default(LEAD)
+    urgency  Urgency @default(NORMAL)
+    notes     Notes[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Notes {
+    id        Int     @id @default(autoincrement())
+    title     String
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum Stage {
+    LEAD
+    CONTACTED
+    TEST_DRIVE
+    NEGOTIATION
+    CLOSED_WON
+    CLOSED_LOST
+}
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -63,6 +122,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    clients       Client[]
 }
 
 model VerificationToken {
