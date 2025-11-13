@@ -1,6 +1,7 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
+import { headers } from "next/headers";
 import { Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
@@ -19,10 +20,13 @@ const geist = Geist({
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const hdrs = headers();
+
   return (
-    <html lang="en" className={`${geist.variable}`}>
+    <html lang="pt-BR" className={geist.variable} suppressHydrationWarning>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        {/* Passa os headers da request para o tRPC (cookies/sessão) */}
+        <TRPCReactProvider headers={hdrs}>{children}</TRPCReactProvider>
       </body>
     </html>
   );

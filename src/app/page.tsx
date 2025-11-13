@@ -1,7 +1,6 @@
 import { auth as getServerAuthSession } from "~/server/auth";
 import ClientsManager from "./_components/clients";
 
-
 export default async function Home() {
   const session = await getServerAuthSession();
 

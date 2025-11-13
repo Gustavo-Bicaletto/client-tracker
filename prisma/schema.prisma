@@ -54,16 +54,19 @@ model Car {
     model    String
     version  String?
     year     Int?
+
+    opportunities Opportunity[]
 }
 
 model Opportunity {
     id        Int      @id @default(autoincrement())
     clientId  Int
     carLabel  String
+    carModelId Int?
     client    Client  @relation(fields: [clientId], references: [id])
     carModel  Car?    @relation(fields: [carModelId], references: [id])
-    stage    Stage   @default(LEAD)
-    urgency  Urgency @default(NORMAL)
+    stage     Stage   @default(LEAD)
+    urgency   Urgency @default(NORMAL)
     notes     Notes[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -73,6 +76,8 @@ model Notes {
     id        Int     @id @default(autoincrement())
     title     String
     content   String
+    opportunityId Int
+    opportunity   Opportunity @relation(fields: [opportunityId], references: [id])
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }

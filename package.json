@@ -40,17 +40,23 @@
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/cli": "^4.1.16",
     "@tailwindcss/postcss": "^4.0.15",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^20.14.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.2.3",
+    "jsdom": "^27.2.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "prisma": "^6.5.0",
     "tailwindcss": "^4.1.15",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.27.0"
+    "typescript-eslint": "^8.27.0",
+    "vitest": "^4.0.8"
   },
   "ct3aMetadata": {
     "initVersion": "7.39.3"
