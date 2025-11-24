@@ -7,29 +7,28 @@ import { Urgency } from "@prisma/client";
 export default function ClientsManager() {
   const utils = api.useUtils();
 
-  // Listagem com paginação
-  const clients = api.client.getAll.useInfiniteQuery(
+  // ✅ CORRIGIDO: client (singular, como está no root.ts)
+  const clientsList = api.clients.getAll.useInfiniteQuery(
     { limit: 10 },
     { getNextPageParam: (last) => last.nextCursor }
   );
 
-  // Criar cliente
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const createClient = api.client.create.useMutation({
+  
+  // ✅ CORRIGIDO: client (singular)
+  const createClient = api.clients.create.useMutation({
     onSuccess: () => {
-      void utils.client.getAll.invalidate();
+      void utils.clients.getAll.invalidate(); // ✅ CORRIGIDO
       setName("");
       setEmail("");
     },
   });
 
-  // Criar oportunidade para um cliente
   const createOpp = api.opportunity.create.useMutation({
     onSuccess: () => void utils.opportunity.getByClient.invalidate(),
   });
 
-  // Criar nota
   const createNote = api.notes.create.useMutation({
     onSuccess: () => void utils.opportunity.getByClient.invalidate(),
   });
@@ -53,7 +52,7 @@ export default function ClientsManager() {
           />
           <button
             className="rounded bg-blue-600 px-3 py-1 text-white disabled:opacity-50"
-            disabled={!name || createClient.isLoading}
+            disabled={!name || createClient.isPending}
             onClick={() =>
               createClient.mutate({
                 name,
@@ -63,7 +62,7 @@ export default function ClientsManager() {
               })
             }
           >
-            {createClient.isLoading ? "Criando..." : "Criar"}
+            {createClient.isPending ? "Criando..." : "Criar"}
           </button>
         </div>
         {createClient.error && (
@@ -74,7 +73,7 @@ export default function ClientsManager() {
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Clientes</h2>
         <ul className="space-y-2">
-          {clients.data?.pages
+          {clientsList.data?.pages
             .flatMap((p) => p.clients)
             .map((c) => (
               <li key={c.id} className="rounded border p-3">
@@ -107,7 +106,7 @@ export default function ClientsManager() {
                       className="rounded bg-indigo-600 px-3 py-1 text-white"
                       onClick={() =>
                         createNote.mutate({
-                          opportunityId: c.id, // ajuste se necessário: use o id de uma oportunidade real
+                          opportunityId: c.id,
                           title: "Contato inicial",
                           content: "Ligar para entender necessidades.",
                         })
@@ -124,10 +123,10 @@ export default function ClientsManager() {
         <div>
           <button
             className="rounded border px-3 py-1 disabled:opacity-50"
-            disabled={!clients.hasNextPage || clients.isFetchingNextPage}
-            onClick={() => clients.fetchNextPage()}
+            disabled={!clientsList.hasNextPage || clientsList.isFetchingNextPage}
+            onClick={() => clientsList.fetchNextPage()}
           >
-            {clients.isFetchingNextPage ? "Carregando..." : "Carregar mais"}
+            {clientsList.isFetchingNextPage ? "Carregando..." : "Carregar mais"}
           </button>
         </div>
       </section>

@@ -18,7 +18,12 @@
     "lint:fix": "next lint --fix",
     "preview": "next build && next start",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "cross-env NODE_ENV=test vitest",
+    "test:ui": "cross-env NODE_ENV=test vitest --ui",
+    "test:run": "cross-env NODE_ENV=test vitest run",
+    "test:coverage": "cross-env NODE_ENV=test vitest run --coverage",
+    "db:test:setup": "cross-env DATABASE_URL=\"postgresql://postgres:password@localhost:5432/client-tracker-test\" npx prisma migrate deploy"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.0",
@@ -27,13 +32,11 @@
     "@tanstack/react-query": "^5.69.0",
     "@trpc/client": "^11.0.0",
     "@trpc/react-query": "^11.0.0",
-    "@trpc/server": "^11.0.0",
     "next": "^15.2.3",
     "next-auth": "^5.0.0-beta.25",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",
-    "superjson": "^2.2.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -43,20 +46,27 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^20.14.10",
+    "@trpc/server": "^11.7.2",
+    "@types/node": "^20.19.25",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/coverage-v8": "^4.0.10",
+    "@vitest/ui": "^4.0.10",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.2.3",
     "jsdom": "^27.2.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "prisma": "^6.5.0",
+    "superjson": "^2.2.5",
     "tailwindcss": "^4.1.15",
+    "tsup": "^8.1.0",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.27.0",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.10"
   },
   "ct3aMetadata": {
     "initVersion": "7.39.3"
